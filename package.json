@@ -1,0 +1,33 @@
+{
+  "name": "avalanche-hackathon",
+  "version": "1.0.0",
+  "description": "A real-estate platform on Avalanche Blockchain project",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js --network avalanche",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network avalanche-testnet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learnershailesh/Avalanche-Hackathon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/learnershailesh/Avalanche-Hackathon/issues"
+  },
+  "homepage": "https://github.com/learnershailesh/Avalanche-Hackathon#readme",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^5.4.0",
+    "chai": "^4.5.0",
+    "dotenv": "^17.2.2",
+    "ethers": "^5.8.0",
+    "hardhat": "^2.17.0"
+  }
+}
