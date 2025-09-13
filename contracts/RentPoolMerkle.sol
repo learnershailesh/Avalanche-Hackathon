@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
 
-contract RentPoolMerkle is Ownable, ReentrancyGuard, Pausable {
+contract RentPoolMerkle is Ownable {
     IERC20 public stable;
     mapping(uint256 => bytes32) public epochRoot;
     mapping(uint256 => mapping(address => bool)) public claimed;
@@ -27,7 +25,7 @@ contract RentPoolMerkle is Ownable, ReentrancyGuard, Pausable {
         _;
     }
     
-    constructor(address stableAddr) {
+    constructor(address stableAddr) Ownable(msg.sender) {
         require(stableAddr != address(0), "Invalid stable address");
         stable = IERC20(stableAddr);
     }
@@ -36,7 +34,6 @@ contract RentPoolMerkle is Ownable, ReentrancyGuard, Pausable {
     function depositRent(uint256 epochId, uint256 amount) 
         external 
         validEpoch(epochId)
-        whenNotPaused 
     {
         require(amount > 0, "Zero amount");
         require(stable.transferFrom(msg.sender, address(this), amount), "Transfer failed");
@@ -59,9 +56,7 @@ contract RentPoolMerkle is Ownable, ReentrancyGuard, Pausable {
     // Fixed reentrancy vulnerability
     function claim(uint256 epochId, uint256 amount, bytes32[] calldata proof) 
         external 
-        nonReentrant
         validEpoch(epochId)
-        whenNotPaused 
     {
         require(!claimed[epochId][msg.sender], "Already claimed");
         require(amount > 0, "Zero amount");
@@ -91,13 +86,6 @@ contract RentPoolMerkle is Ownable, ReentrancyGuard, Pausable {
     }
     
     // Emergency functions
-    function pause() external onlyOwner {
-        _pause();
-    }
-    
-    function unpause() external onlyOwner {
-        _unpause();
-    }
     
     function emergencyWithdraw(address token, uint256 amount) external onlyOwner {
         IERC20(token).transfer(owner(), amount);

@@ -5,7 +5,7 @@ require("dotenv").config();
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: "0.8.19",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
@@ -17,15 +17,9 @@ module.exports = {
     hardhat: {
       chainId: 31337
     },
-    avalanche: {
-      url: "https://api.avax.network/ext/bc/C/rpc",
-      gasPrice: 225000000000,
-      chainId: 43114,
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
-    },
     "avalanche-testnet": {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
-      gasPrice: 225000000000,
+      gasPrice: 25000000, // Reduced from 225000000000
       chainId: 43113,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     }

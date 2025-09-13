@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -139,13 +139,11 @@ contract GuardedERC20 is ERC20, AccessControl, Pausable, ReentrancyGuard {
         _unpause();
     }
     
-    // Override _beforeTokenTransfer to include pause check
-    function _beforeTokenTransfer(address from, address to, uint256 amount) 
-        internal 
-        override 
-        whenNotPaused 
-    {
-        super._beforeTokenTransfer(from, to, amount);
-        _checkKYC(to);
+    // Override _update to include pause and KYC checks
+    function _update(address from, address to, uint256 value) internal override whenNotPaused {
+        super._update(from, to, value);
+        if (to != address(0)) {
+            _checkKYC(to);
+        }
     }
 }

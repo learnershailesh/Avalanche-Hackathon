@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
@@ -82,7 +82,7 @@ contract TitleNFT is ERC721, ERC721URIStorage, ERC721Enumerable, AccessControl, 
     
     // Burn title with enhanced validation
     function burn(uint256 id) external onlyRole(BURNER_ROLE) whenNotPaused {
-        require(_exists(id), "Token does not exist");
+        require(_ownerOf(id) != address(0), "Token does not exist");
         
         _burn(id);
         delete docUri[id];
@@ -111,14 +111,14 @@ contract TitleNFT is ERC721, ERC721URIStorage, ERC721Enumerable, AccessControl, 
         external 
         onlyPropertyOwner(tokenId) 
     {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         encryptedMetadata[tokenId] = encryptedData;
         emit EncryptedMetadataUpdated(tokenId, encryptedData);
     }
     
     // Get encrypted metadata
     function getEncryptedMetadata(uint256 tokenId) external view returns (bytes32) {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         return encryptedMetadata[tokenId];
     }
     
@@ -128,7 +128,7 @@ contract TitleNFT is ERC721, ERC721URIStorage, ERC721Enumerable, AccessControl, 
         onlyPropertyOwner(tokenId) 
         whenNotPaused 
     {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         require(bytes(data.location).length > 0, "Invalid location");
         require(data.value > 0, "Invalid value");
         require(data.area > 0, "Invalid area");
@@ -139,7 +139,7 @@ contract TitleNFT is ERC721, ERC721URIStorage, ERC721Enumerable, AccessControl, 
     
     // Verify property (admin only)
     function verifyProperty(uint256 tokenId) external onlyRole(ADMIN_ROLE) {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         propertyData[tokenId].isVerified = true;
         emit PropertyDataUpdated(tokenId, propertyData[tokenId]);
     }
@@ -155,38 +155,34 @@ contract TitleNFT is ERC721, ERC721URIStorage, ERC721Enumerable, AccessControl, 
     
     // View functions
     function getPropertyData(uint256 tokenId) external view returns (PropertyData memory) {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         return propertyData[tokenId];
     }
     
     function getPropertyOwner(uint256 tokenId) external view returns (address) {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         return propertyOwners[tokenId];
     }
     
     function getMintTimestamp(uint256 tokenId) external view returns (uint256) {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         return mintTimestamps[tokenId];
     }
     
     function getDocURI(uint256 tokenId) external view returns (string memory) {
-        require(_exists(tokenId), "Token does not exist");
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
         return docUri[tokenId];
     }
     
     // Override required functions
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId,
-        uint256 batchSize
-    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
-        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    function _increaseBalance(address account, uint128 value) internal override(ERC721, ERC721Enumerable) {
+        super._increaseBalance(account, value);
     }
     
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-        super._burn(tokenId);
+    function _update(address to, uint256 tokenId, address auth) internal override(ERC721, ERC721Enumerable) returns (address) {
+        return super._update(to, tokenId, auth);
     }
+    
     
     function tokenURI(uint256 tokenId) 
         public 

@@ -1,0 +1,12 @@
+{
+  "network": "avalanche-testnet",
+  "chainId": 43113,
+  "deployer": "0x969339DeE45bE0fB1f8C2AD42DC89F5853928eaa",
+  "contracts": {
+    "ComplianceRegistry": "0x67b05db7F8BE825eDac5158F0efb02565726a073",
+    "TitleNFT": "0x3733c466f293841886653B4cC1B1F0a89D6746Aa",
+    "Fractionalizer": "0x779672A76b1358b42b4aEc5B0786503DA2f626cB",
+    "RentPoolMerkle": "0x846E9f0Bd90b6BEFB7024A6Eba6a0B2CeC002FCD"
+  },
+  "timestamp": "2025-09-13T14:01:59.599Z"
+}
