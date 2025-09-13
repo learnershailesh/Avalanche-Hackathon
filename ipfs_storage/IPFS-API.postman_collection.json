@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "ipfs-file-storage-api",
+		"name": "IPFS File Storage API",
+		"description": "Dynamic collection for testing IPFS file storage and retrieval",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "file_cid",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-set base URL if not set",
+					"if (!pm.environment.get('base_url')) {",
+					"    pm.environment.set('base_url', 'http://localhost:8081');",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-extract CID from upload response",
+					"if (pm.response.code === 200 && pm.request.url.path.includes('upload')) {",
+					"    try {",
+					"        const response = pm.response.json();",
+					"        if (response.cid) {",
+					"            pm.environment.set('file_cid', response.cid);",
+					"            console.log('✅ File uploaded! CID saved:', response.cid);",
+					"            console.log('📦 File size:', response.size, 'bytes');",
+					"            console.log('🔗 IPFS path:', response.path);",
+					"        }",
+					"    } catch (e) {",
+					"        console.log('❌ Could not parse upload response');",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "🏥 Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Check if IPFS node is running and healthy"
+			},
+			"response": []
+		},
+		{
+			"name": "📤 Upload File (Dynamic)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": [],
+							"description": "Select any file to upload (images, documents, etc.)"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/upload",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"upload"
+					]
+				},
+				"description": "Upload any file to IPFS. The CID will be automatically saved for retrieval."
+			},
+			"response": []
+		},
+		{
+			"name": "📥 Retrieve File (Auto CID)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/retrieve?cid={{file_cid}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"retrieve"
+					],
+					"query": [
+						{
+							"key": "cid",
+							"value": "{{file_cid}}",
+							"description": "Automatically uses CID from last upload"
+						}
+					]
+				},
+				"description": "Retrieve the last uploaded file using its CID (automatically set)"
+			},
+			"response": []
+		},
+		{
+			"name": "📥 Retrieve File (Manual CID)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/retrieve?cid=YOUR_CID_HERE",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"retrieve"
+					],
+					"query": [
+						{
+							"key": "cid",
+							"value": "YOUR_CID_HERE",
+							"description": "Enter any CID manually"
+						}
+					]
+				},
+				"description": "Retrieve any file by manually entering its CID"
+			},
+			"response": []
+		},
+		{
+			"name": "📋 List All Files",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"list"
+					]
+				},
+				"description": "List all files currently stored in IPFS"
+			},
+			"response": []
+		},
+		{
+			"name": "🌐 View File in Browser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ipfs.io/ipfs/{{file_cid}}",
+					"protocol": "https",
+					"host": [
+						"ipfs.io"
+					],
+					"path": [
+						"ipfs",
+						"{{file_cid}}"
+					]
+				},
+				"description": "Open the last uploaded file in IPFS public gateway"
+			},
+			"response": []
+		}
+	]
+}
