@@ -1,42 +1,362 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Global styles for the Real Estate Platform */
+.App {
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: 'Inter', 'SF Pro Display', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
-@keyframes logo-spin {
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Focus styles */
+*:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Selection styles */
+::selection {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* Animation for smooth transitions */
+.MuiCard-root {
+  transition: all 0.2s ease-in-out;
+}
+
+.MuiCard-root:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom button styles */
+.MuiButton-root {
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  z-index: 1;
+  font-weight: 600;
+}
+
+.MuiButton-root:hover {
+  transform: translateY(-1px);
+}
+
+.MuiButton-root:active {
+  transform: translateY(0);
+}
+
+/* Fix button clickability issues */
+.MuiButton-root {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.MuiButton-root:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Fix any potential z-index issues */
+.MuiButton-root:focus {
+  outline: none;
+  z-index: 2;
+}
+
+/* Fix for MUI Button variants */
+.MuiButton-contained {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.MuiButton-contained:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Fix for disabled buttons */
+.MuiButton-root.Mui-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Ensure proper touch targets on mobile */
+@media (max-width: 768px) {
+  .MuiButton-root {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Fix vibration issue - prevent multiple transforms on button children */
+.MuiButton-root .MuiButton-startIcon,
+.MuiButton-root .MuiButton-endIcon {
+  pointer-events: none;
+}
+
+/* Ensure all buttons work properly */
+.MuiButton-root {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Specific fix for navigation buttons */
+.MuiAppBar .MuiButton-root {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 10;
+  position: relative;
+}
+
+/* Ensure navigation buttons are above other elements */
+.MuiAppBar .MuiToolbar-root .MuiBox-root .MuiButton-root {
+  z-index: 100 !important;
+  position: relative !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Fix for any potential overlay issues */
+.MuiAppBar {
+  z-index: 1000 !important;
+}
+
+.MuiToolbar-root {
+  z-index: 1001 !important;
+}
+
+/* Fix for Menu components */
+.MuiMenu-root {
+  pointer-events: auto !important;
+}
+
+.MuiMenuItem-root {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.MuiMenuItem-root:hover {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Prevent any conflicting animations */
+.MuiButton-root:hover,
+.MuiButton-root:active,
+.MuiButton-root:focus {
+  transform: translateY(-1px) !important;
+  animation: none !important;
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loading {
+  animation: pulse 2s infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Slide in animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-.card {
-  padding: 2em;
+.slide-in {
+  animation: slideIn 0.6s ease-out;
 }
 
-.read-the-docs {
-  color: #888;
+/* Responsive design helpers */
+@media (max-width: 768px) {
+  .MuiCard-root {
+    margin: 8px;
+  }
+}
+
+/* Custom gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.avalanche-gradient {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+}
+
+.modern-gradient {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+}
+
+/* Text effects */
+.gradient-text {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Modern card hover effects */
+.modern-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modern-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Modern button styles */
+.modern-button {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modern-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Modern input styles */
+.modern-input {
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.modern-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Status indicators */
+.status-success {
+  color: #10b981;
+  background: #d1fae5;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-warning {
+  color: #f59e0b;
+  background: #fef3c7;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-error {
+  color: #ef4444;
+  background: #fee2e2;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Utility classes */
+.text-gradient {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-soft {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-large {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  .responsive-text {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .responsive-text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .responsive-text {
+    font-size: 1.125rem;
+  }
 }

@@ -10,8 +10,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@avalabs/avalanche-wallet-sdk": "^0.19.1",
+    "@avalabs/avalanchejs": "^5.0.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@mui/icons-material": "^7.3.2",
+    "@mui/material": "^7.3.2",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "ethers": "^5.8.0",
+    "process": "^0.11.10",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.1",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
